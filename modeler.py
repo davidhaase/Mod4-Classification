@@ -43,7 +43,7 @@ class LinearModeler():
         if data_file != '':
             self.data_file = data_file
         try:
-            self.df = pd.read_csv(self.data_file,index_col='id')
+            self.df = pd.read_csv(self.data_file)
             return self.df.shape
 
         except Exception as e:
