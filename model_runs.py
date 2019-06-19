@@ -22,13 +22,14 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,process,model,x,y,spliter,metrics):
+    def __init__(self,process,model,features,target,spliter,metrics):
         self.sklearn_model = model #ClassifierModel
         self.process = process
-        self.x = x
-        self.y = y
+        self.x = features
+        self.y = target
         self.splitter = splitter
     def evaluate(self):
+        for x_train,x_test,y_train,y_test
         pass #will return metrics
 
 
