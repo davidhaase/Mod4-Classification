@@ -18,5 +18,5 @@ class Attempt():
 class ClassifierModel():
     def __init__(self):
         self.sklearn_model = None
-        self.data_scaler = None #Normalizer,Scaling
+        self.data_processing = None #Normalizer,Scaling, how to handle columns
         self.?
