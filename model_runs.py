@@ -1,6 +1,7 @@
 class RunDetail():
     '''
-    Description of the factors kept constant in each attempt.
+    All meta features as lists; if you want to keep constant, give only one choice
+
     '''
     def __init__(self):
         self.metrics = []
