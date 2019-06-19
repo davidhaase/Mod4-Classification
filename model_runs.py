@@ -28,7 +28,7 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,model,features,target,split,metrics):
+    def __init__(self,model,features,target,resample,scale,**modelargs):
         self.sklearn_model = model #ClassifierModel
         self.process = process
         self.x = features
