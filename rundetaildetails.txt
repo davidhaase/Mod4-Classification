@@ -1,4 +1,9 @@
-how to deal with non even labels
-k size
+resampling method
 model type
-cleaning method
+{
+KNN = k,vote_decide,distance
+Logistic = ?
+DecisionTree
+}
+column list
+scaling method

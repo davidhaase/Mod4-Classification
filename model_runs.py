@@ -1,7 +1,6 @@
 class RunDetail():
     '''
     All meta features as lists; if you want to keep constant, give only one choice
-
     '''
     def __init__(self):
         self.metrics = []
@@ -38,15 +37,20 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,process,model,features,target,spliter,metrics):
+    def __init__(self,model,features,target,resample,scale,**modelargs):
         self.sklearn_model = model #ClassifierModel
         self.process = process
         self.x = features
         self.y = target
-        self.splitter = splitter
+        self.split = split
     def evaluate(self):
-        for x_train,x_test,y_train,y_test
-        pass #will return metrics
+        metric_agg = {}
+        for metric in metrics:
+            metric_agg[metric[0]] = 0
+        runs = 0
+        for x_train,x_test,y_train,y_test in self.split(self.x,self.y):
+            x_train,x_test = self.process(x_train,x_test)
+
 
 
 class ClassifierModel():
