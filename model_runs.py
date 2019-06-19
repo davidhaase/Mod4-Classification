@@ -7,7 +7,6 @@ class RunDetail():
         self.metrics = []
         self.split_strategy = None
         self.target = None
-        self.targettype = None
 
 class ModelRun():
     '''
@@ -17,6 +16,13 @@ class ModelRun():
     def __init__(self):
         self.attempts = []
         self.details = None # RunDetail
+
+    def run_model(self, details):
+        return details
+
+    def get_metrics(self, i=0):
+        if (i < len(self.attempts)):
+            return self.attempts[i]
 
 class Attempt():
     '''
