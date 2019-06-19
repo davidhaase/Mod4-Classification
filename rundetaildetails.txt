@@ -1,0 +1,4 @@
+how to deal with non even labels
+k size
+model type
+cleaning method
