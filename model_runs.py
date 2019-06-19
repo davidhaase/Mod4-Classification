@@ -18,7 +18,8 @@ class ModelRun():
         self.details = None # RunDetail
 
     def run_model(self, details):
-        return details
+        results = get_metrics
+        self.attempts.append(details)
 
     def get_metrics(self, i=0):
         if (i < len(self.attempts)):
@@ -28,23 +29,15 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,process,model,x,y,spliter,metrics):
-        self.sklearn_model = model #ClassifierModel
-        self.process = process
-        self.x = x
-        self.y = y
-        self.splitter = splitter
-    def evaluate(self):
-        pass #will return metrics
-
+    def __init__(self):
+        self.model = None #ClassifierModel
+        self.details = None
 
 class ClassifierModel():
     '''
     Represents decisions from original data all the way until results.
     '''
-    def __init__(self,x,y,model):
-        self.sklearn_model = model
-        self.x = process(x) #Normalizer,Scaling, how to handle columns
-        self.y = y
-    def predict(self,x):
-        return self.sklearn_model
+    def __init__(self,df,process):
+        self.sklearn_model = None
+        self.data_processing = None #Normalizer,Scaling, how to handle columns
+        self.?
