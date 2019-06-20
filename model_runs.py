@@ -33,7 +33,11 @@ class ModelRun():
         else:
             features_df = self.df[rd['features']]
 
-        attempt = Attempt(rd['model'],features_df,target_df,rd['scaler'],rd['metrics'], rd['kwargs'])
+        try:
+            attempt = Attempt(rd['model'],features_df,target_df,rd['scaler'],rd['metrics'], rd['kwargs'])
+            print('OK')
+        except Exception as e:
+            print(e)
         rd['metrics'] = attempt.evaluate()
         self.attempts.append(rd)
         return target_df, features_df
@@ -43,7 +47,7 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,model,features,target,scaler,metrics,**modelargs):
+    def __init__(self,model,features,target,scaler,metrics,modelargs):
         self.sklearn_model = model #ClassifierModel
         self.scaler = scaler()
         self.x = features.values
