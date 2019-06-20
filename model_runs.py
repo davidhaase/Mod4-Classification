@@ -8,13 +8,16 @@ class ModelRun():
         self.history = []
 
     def get_results(self, score_type):
+        import matplotlib.pyplot as plt
         scores = []
-        x_ticks = []
-        trial_range = len(df.history)
+        trial_name = []
+        trial_range = len(self.history)
 
         for trial in self.history:
-            scores.append(trial['results'][score_type])
-            x_ticks.append(trial['results']['model'])
+            key, result = trial
+            if score_type in result:
+                scores.append(result[score_type])
+                trial_name.append(key)
 
         plt.figure(figsize=(12, 6))
         plt.plot(trial_range, scores, color='red', linestyle='dashed', marker='o',
@@ -22,37 +25,21 @@ class ModelRun():
         plt.title('{} Scores'.format(score_type))
         plt.xlabel('Trial')
         plt.ylabel(score_type)
-        plt.xticks(np.arange(len(trial_range)), (x_ticks))
         plt.show()
 
-        for trial_num, trial in  enumerate(self.history):
+        for trial_num, trial in  enumerate(trial_name):
+            print('{}: {}\n'.format(str(trial_num), trial))
 
 
 
     def run_model(self, rd):
-        attempt_count = 1
-        for item in rd:
-            attempt_count *= len(rd[item])
-        print('Warning: attempting {} variations.'.format(str(attempt_count)))
+        # attempt_count = 1
+        # for item in rd:
+        #     attempt_count *= len(rd[item])
+        # print('Warning: attempting {} variations.'.format(str(attempt_count)))
         # x = input('Continue? (y)')
 
 
-<<<<<<< HEAD
-        trials = []
-
-        target_df = self.df[rd['target']]
-        if rd['target'] in rd['features']:
-            features_df = self.df[rd['features']].drop(target_df, axis=1)
-        else:
-            features_df = self.df[rd['features']]
-
-        attempt = Attempt(model=rd['model'],
-                            features=features_df,
-                            target=target_df,
-                            scaler=rd['scaler'],
-                            metrics=rd['metrics'],
-                            modelargs=rd['kwargs'])
-=======
 
         for feat in rd['features']:
             for scaler in rd['scaler']:
@@ -74,12 +61,8 @@ class ModelRun():
                                                 scaler=scaler,
                                                 metrics=rd['metrics'],
                                                 modelargs=kwargs)
-                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs',kwargs}
+                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs':kwargs}
                             self.history.append((key,attempt.evaluate()))
->>>>>>> 611de3174eab14fad1fcdee805ca64918ee55035
-
-        rd['results'] = attempt.evaluate()
-        self.history.append(rd)
 
 
 
