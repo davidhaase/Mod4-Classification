@@ -19,15 +19,15 @@ class ModelRun():
                 scores.append(result[score_type])
                 trial_name.append(key)
 
-        plt.figure(figsize=(12, 6))
-        plt.plot(trial_range, scores, color='red', linestyle='dashed', marker='o',
-                 markerfacecolor='blue', markersize=10)
-        plt.title('{} Scores'.format(score_type))
-        plt.xlabel('Trial')
-        plt.ylabel(score_type)
-        plt.show()
+        # plt.figure(figsize=(12, 6))
+        # plt.plot(trial_range, scores, color='red', linestyle='dashed', marker='o',
+        #          markerfacecolor='blue', markersize=10)
+        # plt.title('{} Scores'.format(score_type))
+        # plt.xlabel('Trial')
+        # plt.ylabel(score_type)
+        # plt.show()
 
-        for trial_num, trial in  enumerate(trial_name):
+        for i in  trial_name:
             print('{}: {}\n'.format(str(trial_num), trial))
 
 
@@ -62,7 +62,7 @@ class ModelRun():
                                                 scaler=scaler,
                                                 metrics=rd['metrics'],
                                                 modelargs=kwargscopy)
-                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs',kwargscopy}
+                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs':kwargscopy}
                             self.history.append((key,attempt.evaluate()))
 
 
