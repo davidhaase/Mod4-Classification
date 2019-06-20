@@ -6,19 +6,28 @@ class RunDetail():
         self.metrics = []
         self.split_strategy = None
         self.target = None
+        self.process = None
+        self.model = None
+        self.features = None
+        self.target = None
+        self.splitter = None
+        self.metrics = None
 
 class ModelRun():
     '''
     Describes experiments and their results considering a constant.
     Manages the expiriment.
     '''
-    def __init__(self):
+    def __init__(self, df):
+        self.df = df
         self.attempts = []
         self.details = None # RunDetail
 
     def run_model(self, details):
-        results = get_metrics
-        self.attempts.append(details)
+        attempt_count = 1
+        for detail in details:
+            attempt_count *= len(detail)
+        return attempt_count
 
     def get_metrics(self, i=0):
         if (i < len(self.attempts)):
