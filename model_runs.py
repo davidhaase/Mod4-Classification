@@ -39,26 +39,29 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,model,features,target,resample,scale,**modelargs):
+    def __init__(self,model,features,target,resample,scale,metrics,**modelargs):
         self.sklearn_model = model #ClassifierModel
         self.process = process
         self.x = features
         self.y = target
         self.split = split
+        self.modelargs = modelargs
+        self.metrics = metrics
     def evaluate(self):
         metric_agg = {}
-        for metric in metrics:
-            metric_agg[metric[0]] = 0
+        for metric in self.metrics:
+            metric_agg[metric.__name__()] = 0
         runs = 0
         for x_train,x_test,y_train,y_test in self.split(self.x,self.y):
-            x_train,x_test = self.process(x_train,x_test)
+            runs += 1
+            self.process.fit(x_train)
+            x_train,x_test = self.process.transform(x_train),self.process.transform(x_test)
+            model = self.sklearn_model(self.modelargs)
+            model.fit(x_train,y_train)
+            preds = model.predict(x_test)
+            for metric in self.metrics:
+                metric_agg[metric.__name__()] += metric(preds,y_test)
 
-
-
-class ClassifierModel():
-    '''
-    Represents decisions from original data all the way until results.
-    '''
-    def __init__(self,df,process):
-        self.sklearn_model = None
-        self.data_processing = None #Normalizer,Scaling, how to handle columns
+        for metric in self.metrics:
+            metric_agg[metric.__name__()] /= runs
+        return metrics
