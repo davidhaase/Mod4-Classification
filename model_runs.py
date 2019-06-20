@@ -1,17 +1,3 @@
-class RunDetail():
-    '''
-    All meta features as lists; if you want to keep constant, give only one choice
-    '''
-    def __init__(self, target, features, model, split, resample, scaler=None, kwargs={}):
-        self.target = target
-        self.split = split
-        self.model = model
-        self.scaler = scaler
-        self.features = features
-        self.resample = resample
-        self.kwargs = kwargs
-        self.metrics = None
-
 class ModelRun():
     '''
     Describes experiments and their results considering a constant.
@@ -21,26 +7,33 @@ class ModelRun():
         self.df = df
         self.attempts = []
 
-    def run_model(self, rd):
-        attempt_count = 0
-        # for item in rd:
-        #     attempt_count += len(rd[item])
-        # print(str(len(rd)), str(attempt_count))
 
+    def run_model(self, rd):
+        attempt_count = 1
+        for item in rd:
+            attempt_count *= len(rd[item])
+        print('Warning: attempting {} variations.'.format(str(attempt_count)))
+        # x = input('Continue? (y)')
+
+
+        trials = []
+   
         target_df = self.df[rd['target']]
         if rd['target'] in rd['features']:
             features_df = self.df[rd['features']].drop(target_df, axis=1)
         else:
             features_df = self.df[rd['features']]
 
-        try:
-            attempt = Attempt(rd['model'],features_df,target_df,rd['scaler'],rd['metrics'], rd['kwargs'])
-            print('OK')
-        except Exception as e:
-            print(e)
-        rd['metrics'] = attempt.evaluate()
+        attempt = Attempt(model=rd['model'],
+                            features=features_df,
+                            target=target_df,
+                            scaler=rd['scaler'],
+                            metrics=rd['metrics'],
+                            modelargs=rd['kwargs'])
+
+        rd['results'] = attempt.evaluate()
         self.attempts.append(rd)
-        return target_df, features_df
+        return None
 
 
 
