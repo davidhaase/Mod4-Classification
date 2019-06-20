@@ -16,24 +16,33 @@ class ModelRun():
         # x = input('Continue? (y)')
 
 
-        trials = []
-   
-        target_df = self.df[rd['target']]
-        if rd['target'] in rd['features']:
-            features_df = self.df[rd['features']].drop(target_df, axis=1)
-        else:
-            features_df = self.df[rd['features']]
 
-        attempt = Attempt(model=rd['model'],
-                            features=features_df,
-                            target=target_df,
-                            scaler=rd['scaler'],
-                            metrics=rd['metrics'],
-                            modelargs=rd['kwargs'])
+        for feat in rd['features']:
+            for scaler in rd['scaler']:
+                for model in rd['model']:
+                    for kwargs in rd['kwargs']:
+                        if kwargs['name'] == model.__name__:
+                            del kwargs['name']
+                            target_df = self.df[rd['target']]
+                            if rd['target'] in feat:
+                                feat.remove(rd['target'])
+
+                            features_df = self.df[feat]
+
+
+
+                            attempt = Attempt(model=model,
+                                                features=features_df,
+                                                target=target_df,
+                                                scaler=scaler,
+                                                metrics=rd['metrics'],
+                                                modelargs=kwargs)
+                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs',kwargs}
+                            self.history.append((key,attempt.evaluate()))
 
         rd['results'] = attempt.evaluate()
-        self.attempts.append(rd)
-        return None
+        self.history.append(rd)
+
 
 
 
