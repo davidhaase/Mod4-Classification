@@ -37,11 +37,11 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,model,features,target,resample,scaler,metrics,**modelargs):
+    def __init__(self,model,features,target,scaler,metrics,**modelargs):
         self.sklearn_model = model #ClassifierModel
-        self.scaler = scaler
-        self.x = features
-        self.y = target
+        self.scaler = scaler()
+        self.x = features.values
+        self.y = target.values
         self.modelargs = modelargs
         self.metrics = metrics
     def evaluate(self):
@@ -70,4 +70,4 @@ def split(x,y):
     for train_ind in kfold.split(x):
         test_ind = [ind for ind in range(len(y)) if ind not in train_ind]
         splits.append([x[train_ind],x[test_ind],y[train_ind],y[test_ind]])
-    return splits 
+    return splits
