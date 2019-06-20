@@ -37,12 +37,11 @@ class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
     '''
-    def __init__(self,model,features,target,resample,scale,metrics,**modelargs):
+    def __init__(self,model,features,target,resample,scaler,metrics,**modelargs):
         self.sklearn_model = model #ClassifierModel
-        self.process = process
+        self.scaler = scaler
         self.x = features
         self.y = target
-        self.split = split
         self.modelargs = modelargs
         self.metrics = metrics
     def evaluate(self):
@@ -50,10 +49,10 @@ class Attempt():
         for metric in self.metrics:
             metric_agg[metric.__name__()] = 0
         runs = 0
-        for x_train,x_test,y_train,y_test in self.split(self.x,self.y):
+        for x_train,x_test,y_train,y_test in split(self.x,self.y):
             runs += 1
-            self.process.fit(x_train)
-            x_train,x_test = self.process.transform(x_train),self.process.transform(x_test)
+            self.scaler.fit(x_train)
+            x_train,x_test = self.scaler.transform(x_train),self.scaler.transform(x_test)
             model = self.sklearn_model(self.modelargs)
             model.fit(x_train,y_train)
             preds = model.predict(x_test)
@@ -63,3 +62,12 @@ class Attempt():
         for metric in self.metrics:
             metric_agg[metric.__name__()] /= runs
         return metrics
+
+from sklearn.model_selection import KFold
+def split(x,y):
+    kfold = KFold(n_splits=5)
+    splits = []
+    for train_ind in kfold.split(x):
+        test_ind = [ind for ind in range(len(y)) if ind not in train_ind]
+        splits.append([x[train_ind],x[test_ind],y[train_ind],y[test_ind]])
+    return splits 
