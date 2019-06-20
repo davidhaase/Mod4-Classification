@@ -22,7 +22,8 @@ class ModelRun():
                 for model in rd['model']:
                     for kwargs in rd['kwargs']:
                         if kwargs['name'] == model.__name__:
-                            del kwargs['name']
+                            kwargscopy = kwargs.copy()
+                            del kwargscopy['name']
                             target_df = self.df[rd['target']]
                             if rd['target'] in feat:
                                 feat.remove(rd['target'])
@@ -36,8 +37,8 @@ class ModelRun():
                                                 target=target_df,
                                                 scaler=scaler,
                                                 metrics=rd['metrics'],
-                                                modelargs=kwargs)
-                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs',kwargs}
+                                                modelargs=kwargscopy)
+                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs',kwargscopy}
                             self.history.append((key,attempt.evaluate()))
 
         rd['results'] = attempt.evaluate()
