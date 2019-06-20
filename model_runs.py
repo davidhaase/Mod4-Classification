@@ -37,6 +37,7 @@ class ModelRun():
         # x = input('Continue? (y)')
 
 
+<<<<<<< HEAD
         trials = []
 
         target_df = self.df[rd['target']]
@@ -51,10 +52,35 @@ class ModelRun():
                             scaler=rd['scaler'],
                             metrics=rd['metrics'],
                             modelargs=rd['kwargs'])
+=======
+
+        for feat in rd['features']:
+            for scaler in rd['scaler']:
+                for model in rd['model']:
+                    for kwargs in rd['kwargs']:
+                        if kwargs['name'] == model.__name__:
+                            del kwargs['name']
+                            target_df = self.df[rd['target']]
+                            if rd['target'] in feat:
+                                feat.remove(rd['target'])
+
+                            features_df = self.df[feat]
+
+
+
+                            attempt = Attempt(model=model,
+                                                features=features_df,
+                                                target=target_df,
+                                                scaler=scaler,
+                                                metrics=rd['metrics'],
+                                                modelargs=kwargs)
+                            key = {'features':feat,'scaler':scaler.__name__,'model':model.__name__,'kwargs',kwargs}
+                            self.history.append((key,attempt.evaluate()))
+>>>>>>> 611de3174eab14fad1fcdee805ca64918ee55035
 
         rd['results'] = attempt.evaluate()
-        self.attempts.append(rd)
-        return None
+        self.history.append(rd)
+
 
 
 
