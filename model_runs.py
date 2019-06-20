@@ -20,16 +20,20 @@ class ModelRun():
     def __init__(self, df):
         self.df = df
         self.attempts = []
-        self.details = None # RunDetail
 
     def run_model(self, rd):
-        target_df = self.df[rd['target']]
-        if rd['target'] in rd['features']:
-            features_df = self.df[rd['features']].drop(rd['target'], axis=1)
-        else:
-            features_df = self.df[rd['features']]
+        attempt_count = 0
+        for item in rd:
+            attempt_count += len(rd[item])
+        print(str(len(rd), str(attempt_count))
 
-        #attempt = Attempt(rd.model,rd.features,rd.target,rd.resample,rd.scaler,rd.kwargs)
+        target_df = self.df[rd['target']
+        if rd['target'] in rd['features']:
+            features_df = self.df[rd['features'].drop(target_df, axis=1)
+        else:
+            features_df = self.df[rd['features']
+
+        attempt = Attempt(rd['model'],features_df,target_df,rd.resample,rd.scaler,rd['metrics'], rd.kwargs)
         rd['metrics'] = {'result':'hello'}  #attempt.evaluate()
         self.attempts.append(rd)
         return target_df, features_df
