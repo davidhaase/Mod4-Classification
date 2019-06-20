@@ -2,15 +2,14 @@ class RunDetail():
     '''
     All meta features as lists; if you want to keep constant, give only one choice
     '''
-    def __init__(self):
-        self.metrics = []
-        self.split_strategy = None
-        self.target = None
-        self.process = None
-        self.model = None
-        self.features = None
-        self.target = None
-        self.splitter = None
+    def __init__(self, target, features, model, split, resample, scaler=None, kwargs={}):
+        self.target = target
+        self.split = split
+        self.model = model
+        self.scaler = scaler
+        self.features = features
+        self.resample = resample
+        self.kwargs = kwargs
         self.metrics = None
 
 class ModelRun():
@@ -23,15 +22,18 @@ class ModelRun():
         self.attempts = []
         self.details = None # RunDetail
 
-    def run_model(self, details):
-        attempt_count = 1
-        for detail in details:
-            attempt_count *= len(detail)
-        return attempt_count
+    def run_model(self, rd):
+        target_df = self.df[rd['target']]
+        if rd['target'] in rd['features']:
+            features_df = self.df[rd['features']].drop(rd['target'], axis=1)
+        else:
+            features_df = self.df[rd['features']]
 
-    def get_metrics(self, i=0):
-        if (i < len(self.attempts)):
-            return self.attempts[i]
+        #attempt = Attempt(rd.model,rd.features,rd.target,rd.resample,rd.scaler,rd.kwargs)
+        rd['metrics'] = {'result':'hello'}  #attempt.evaluate()
+        self.attempts.append(rd)
+        return target_df, features_df
+
 
 class Attempt():
     '''
