@@ -43,6 +43,9 @@ class ModelRun():
         return target_df, features_df
 
 
+
+
+
 class Attempt():
     '''
     Contains the ClassifierModel (independent variable) and RunDetails (control/constant)
@@ -57,27 +60,26 @@ class Attempt():
     def evaluate(self):
         metric_agg = {}
         for metric in self.metrics:
-            metric_agg[metric.__name__()] = 0
+            metric_agg[metric.__name__] = 0
         runs = 0
         for x_train,x_test,y_train,y_test in split(self.x,self.y):
             runs += 1
             self.scaler.fit(x_train)
             x_train,x_test = self.scaler.transform(x_train),self.scaler.transform(x_test)
-            model = self.sklearn_model(self.modelargs)
+            model = self.sklearn_model(**self.modelargs)
             model.fit(x_train,y_train)
             preds = model.predict(x_test)
             for metric in self.metrics:
-                metric_agg[metric.__name__()] += metric(preds,y_test)
+                metric_agg[metric.__name__] += metric(preds,y_test)
 
         for metric in self.metrics:
-            metric_agg[metric.__name__()] /= runs
-        return metrics
+            metric_agg[metric.__name__] /= runs
+        return metric_agg
 
 from sklearn.model_selection import KFold
 def split(x,y):
     kfold = KFold(n_splits=5)
     splits = []
-    for train_ind in kfold.split(x):
-        test_ind = [ind for ind in range(len(y)) if ind not in train_ind]
+    for train_ind,test_ind in kfold.split(x):
         splits.append([x[train_ind],x[test_ind],y[train_ind],y[test_ind]])
     return splits
