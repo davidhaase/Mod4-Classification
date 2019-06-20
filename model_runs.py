@@ -5,7 +5,28 @@ class ModelRun():
     '''
     def __init__(self, df):
         self.df = df
-        self.attempts = []
+        self.history = []
+
+    def get_results(self, score_type):
+        scores = []
+        x_ticks = []
+        trial_range = len(df.history)
+
+        for trial in self.history:
+            scores.append(trial['results'][score_type])
+            x_ticks.append(trial['results']['model'])
+
+        plt.figure(figsize=(12, 6))
+        plt.plot(trial_range, scores, color='red', linestyle='dashed', marker='o',
+                 markerfacecolor='blue', markersize=10)
+        plt.title('{} Scores'.format(score_type))
+        plt.xlabel('Trial')
+        plt.ylabel(score_type)
+        plt.xticks(np.arange(len(trial_range)), (x_ticks))
+        plt.show()
+
+        for trial_num, trial in  enumerate(self.history):
+
 
 
     def run_model(self, rd):
@@ -17,7 +38,7 @@ class ModelRun():
 
 
         trials = []
-   
+
         target_df = self.df[rd['target']]
         if rd['target'] in rd['features']:
             features_df = self.df[rd['features']].drop(target_df, axis=1)
