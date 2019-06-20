@@ -2,9 +2,14 @@ resampling method
 model type
 
 {We actually do not need to look at the parameters specifically because we can use grid search
-KNN = k,vote_decide,distance
-Logistic = ?
+KNN = k,vote_decide,distance,
+Logistic = 'penalty':['l1','l2']
 DecisionTree = method_of_attribute_selection,min_sample,max_leafs,max_depth,min_impurity
 }
 column list
 scaling method
+
+
+for f_val in features:
+  for s_val in samples:
+    Attempt()
