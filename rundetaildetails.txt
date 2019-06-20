@@ -2,9 +2,23 @@ resampling method
 model type
 
 {We actually do not need to look at the parameters specifically because we can use grid search
-KNN = k,vote_decide,distance,
-Logistic = 'penalty':['l1','l2']
+#k,vote_decide,distance,
+KNN =
+  'n_neighbors':[1,4,7,..],
+  'p':[1,2,3,..], #degree of distance formula
+Logistic =
+  'penalty':['l1','l2'],
+  'C':[.1,.5,1], #must be positive, but the smaller the number the harsher the regularization
+  'fit_intercept':[True,False], #should a constant be added to the regression?
 DecisionTree = method_of_attribute_selection,min_sample,max_leafs,max_depth,min_impurity
+  'criterion':['gini','entropy'], #for impurity or information gain
+  'splitter':['best','random'], #how to decide where to split
+  'max_depth':['None',1,2,3,..],
+  'min_samples_split':[1,2,3,..],
+  'min_samples_leaf':[1,2,3,..],
+  'max_features':['sqrt','log2',1,2,3,..,None], #How many features to look at at every split, None means look at all
+  'random_state';[1,2,3,..] #use this to keep a consistent random state
+  #theres a bunch more, should we go through them?
 }
 column list
 scaling method
