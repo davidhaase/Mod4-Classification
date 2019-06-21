@@ -4,3 +4,4 @@ modeler.cpython-37.pyc
 model_runs.cpython-37.pyc
 *.ipynb*
 __pycache__
+images
