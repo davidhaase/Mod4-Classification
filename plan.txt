@@ -1,0 +1,4 @@
+finish bad columns
+think conceptually what we may want
+insights on continuous features
+determine if there is any easy feature engineer
