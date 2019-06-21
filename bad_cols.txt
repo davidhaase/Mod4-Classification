@@ -1,0 +1,7 @@
+Edu
+  unexp(0,5,6)
+Mrtl Status
+  unexp(0)
+Pymnt Status  #possibly shifted
+  unexp(-2,0)
+  exp(9)
